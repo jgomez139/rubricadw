@@ -1,0 +1,63 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Categoria {
+  id       Int      @id @default(autoincrement())
+  nombre   String
+  activos  Activo[]
+}
+
+model Empleado {
+  id          Int          @id @default(autoincrement())
+  nombre      String
+  email       String       @unique
+  cargo       String
+  asignaciones Asignacion[]
+}
+
+model Activo {
+  id            Int           @id @default(autoincrement())
+  nombre        String
+  serial        String        @unique
+  estado        String        @default("disponible") // activo | disponible | mantenimiento | baja
+  fechaCompra   DateTime
+  costo         Float
+  proveedor     String
+  categoriaId   Int
+  categoria     Categoria     @relation(fields: [categoriaId], references: [id])
+  mantenimientos Mantenimiento[]
+  asignaciones  Asignacion[]
+  createdAt     DateTime      @default(now())
+}
+
+model Mantenimiento {
+  id          Int      @id @default(autoincrement())
+  activoId    Int
+  activo      Activo   @relation(fields: [activoId], references: [id])
+  fecha       DateTime
+  descripcion String
+  costo       Float
+  tecnico     String
+}
+
+model Asignacion {
+  id         Int      @id @default(autoincrement())
+  activoId   Int
+  activo     Activo   @relation(fields: [activoId], references: [id])
+  empleadoId Int
+  empleado   Empleado @relation(fields: [empleadoId], references: [id])
+  fechaInicio DateTime @default(now())
+  fechaFin    DateTime?
+  activa      Boolean  @default(true)
+}
