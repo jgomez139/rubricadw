@@ -29,18 +29,30 @@ model Empleado {
 }
 
 model Activo {
-  id            Int           @id @default(autoincrement())
-  nombre        String
-  serial        String        @unique
-  estado        String        @default("disponible") // activo | disponible | mantenimiento | baja
-  fechaCompra   DateTime
-  costo         Float
-  proveedor     String
-  categoriaId   Int
-  categoria     Categoria     @relation(fields: [categoriaId], references: [id])
-  mantenimientos Mantenimiento[]
-  asignaciones  Asignacion[]
-  createdAt     DateTime      @default(now())
+  id               Int           @id @default(autoincrement())
+  nombre           String
+  categoriaId      Int
+  categoria        Categoria     @relation(fields: [categoriaId], references: [id])
+  marca            String
+  modelo           String
+  serial           String        @unique
+  codigoInventario String        @unique
+  estado           EstadoActivo  @default(EN_BODEGA)
+  fechaCompra      DateTime
+  costo            Float
+  proveedor        String
+  deleted          Boolean       @default(false)
+  mantenimientos   Mantenimiento[]
+  asignaciones     Asignacion[]
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+}
+
+enum EstadoActivo {
+  EN_USO
+  EN_BODEGA
+  DADO_DE_BAJA
+  EN_REPARACION
 }
 
 model Mantenimiento {

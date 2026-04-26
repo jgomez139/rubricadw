@@ -18,5 +18,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/api/auth/profile/:path*', '/api/categorias/:path*'], // Apply to profile and categorias routes
+  matcher: ['/api/auth/profile/:path*', '/api/categorias/:path*', '/api/activos/:path*'], // Apply to profile, categorias, and activos routes
 };
