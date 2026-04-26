@@ -24,6 +24,16 @@ interface Activo {
   proveedor: string;
   createdAt: string;
   updatedAt: string;
+  asignaciones?: {
+    id: number;
+    area?: string;
+    empleado?: {
+      id: number;
+      nombre: string;
+      email: string;
+      cargo: string;
+    };
+  }[];
 }
 
 export default function Activos() {
@@ -296,6 +306,7 @@ export default function Activos() {
               <th className="border p-2">Serie</th>
               <th className="border p-2">Código</th>
               <th className="border p-2">Estado</th>
+              <th className="border p-2">Asignado</th>
               <th className="border p-2">Acciones</th>
             </tr>
           </thead>
@@ -309,6 +320,7 @@ export default function Activos() {
                 <td className="border p-2">{act.serial}</td>
                 <td className="border p-2">{act.codigoInventario}</td>
                 <td className="border p-2">{act.estado.replace('_', ' ')}</td>
+                <td className="border p-2">{act.asignaciones?.[0]?.empleado?.nombre ?? act.asignaciones?.[0]?.area ?? 'No asignado'}</td>
                 <td className="border p-2">
                   <button
                     onClick={() => handleEdit(act)}

@@ -33,7 +33,13 @@ export async function GET(request: NextRequest) {
 
     const activos = await prisma.activo.findMany({
       where,
-      include: { categoria: true },
+      include: {
+        categoria: true,
+        asignaciones: {
+          where: { activa: true },
+          include: { empleado: true },
+        },
+      },
       orderBy: { nombre: 'asc' },
     });
     return NextResponse.json(activos);

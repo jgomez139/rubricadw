@@ -66,14 +66,15 @@ model Mantenimiento {
 }
 
 model Asignacion {
-  id         Int      @id @default(autoincrement())
-  activoId   Int
-  activo     Activo   @relation(fields: [activoId], references: [id])
-  empleadoId Int
-  empleado   Empleado @relation(fields: [empleadoId], references: [id])
-  fechaInicio DateTime @default(now())
+  id          Int       @id @default(autoincrement())
+  activoId    Int
+  activo      Activo    @relation(fields: [activoId], references: [id])
+  empleadoId  Int?
+  empleado    Empleado? @relation(fields: [empleadoId], references: [id])
+  area        String?
+  fechaInicio DateTime  @default(now())
   fechaFin    DateTime?
-  activa      Boolean  @default(true)
+  activa      Boolean   @default(true)
 }
 
 model User {

@@ -10,6 +10,7 @@ export default function Home() {
           <Link href="/login" className="bg-green-500 text-white px-4 py-2 rounded">Login</Link>
           <Link href="/categorias" className="bg-purple-500 text-white px-4 py-2 rounded">Categorías</Link>
           <Link href="/activos" className="bg-orange-500 text-white px-4 py-2 rounded">Activos</Link>
+          <Link href="/empleados" className="bg-teal-500 text-white px-4 py-2 rounded">Empleados</Link>
         </div>
       </main>
     </div>

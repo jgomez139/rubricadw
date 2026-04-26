@@ -10,20 +10,13 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
   const prisma = createPrisma();
   try {
     const { id } = await params;
-    const activo = await prisma.activo.findUnique({
+    const empleado = await prisma.empleado.findUnique({
       where: { id: parseInt(id) },
-      include: {
-        categoria: true,
-        asignaciones: {
-          where: { activa: true },
-          include: { empleado: true },
-        },
-      },
     });
-    if (!activo || activo.deleted) {
-      return NextResponse.json({ error: 'Activo not found' }, { status: 404 });
+    if (!empleado) {
+      return NextResponse.json({ error: 'Empleado not found' }, { status: 404 });
     }
-    return NextResponse.json(activo);
+    return NextResponse.json(empleado);
   } catch (error) {
     console.error(error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
@@ -34,24 +27,12 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
   const prisma = createPrisma();
   try {
     const { id } = await params;
-    const { nombre, categoriaId, marca, modelo, serial, codigoInventario, estado, fechaCompra, costo, proveedor } = await request.json();
-    const activo = await prisma.activo.update({
+    const { nombre, email, cargo } = await request.json();
+    const empleado = await prisma.empleado.update({
       where: { id: parseInt(id) },
-      data: {
-        nombre,
-        categoriaId: categoriaId ? parseInt(categoriaId) : undefined,
-        marca,
-        modelo,
-        serial,
-        codigoInventario,
-        estado,
-        fechaCompra: fechaCompra ? new Date(fechaCompra) : undefined,
-        costo: costo ? parseFloat(costo) : undefined,
-        proveedor,
-      },
-      include: { categoria: true },
+      data: { nombre, email, cargo },
     });
-    return NextResponse.json(activo);
+    return NextResponse.json(empleado);
   } catch (error) {
     console.error(error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
@@ -62,11 +43,10 @@ export async function DELETE(request: NextRequest, { params }: { params: Promise
   const prisma = createPrisma();
   try {
     const { id } = await params;
-    await prisma.activo.update({
+    await prisma.empleado.delete({
       where: { id: parseInt(id) },
-      data: { deleted: true },
     });
-    return NextResponse.json({ message: 'Activo deleted' });
+    return NextResponse.json({ message: 'Empleado deleted' });
   } catch (error) {
     console.error(error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
